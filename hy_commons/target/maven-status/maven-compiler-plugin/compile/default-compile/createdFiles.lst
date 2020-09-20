@@ -1,0 +1,16 @@
+com\moxi\commons\entity\trainSet.class
+com\moxi\commons\config\jwt\JwtHelper.class
+com\moxi\commons\config\redis\FastJsonRedisSerializer.class
+com\moxi\commons\entity\AuthUser.class
+com\moxi\commons\entity\MenuPmGp.class
+com\moxi\commons\config\security\SecurityUser.class
+com\moxi\commons\config\mybatis\MetaObjectHandlerConfig.class
+com\moxi\commons\config\jwt\Audience.class
+com\moxi\commons\config\redis\RedisConfig.class
+com\moxi\commons\config\feign\FeignBasicAuthRequestInterceptor.class
+com\moxi\commons\entity\MenuPmGpFK.class
+com\moxi\commons\config\mybatis\MybatisPlusConfig.class
+com\moxi\commons\entity\UserPmGpFK.class
+com\moxi\commons\feign\AdminFeignClient.class
+com\moxi\commons\config\feign\FeignConfiguration.class
+com\moxi\commons\entity\MenuPm.class

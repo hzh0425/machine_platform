@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="hy_sms" />
+        <module name="hy_utils" />
+        <module name="hy_socket" />
+        <module name="hy_search" />
+        <module name="hy_base" />
+        <module name="hy_gateway" />
+        <module name="hy_commons" />
+        <module name="hy_grpc" />
+        <module name="hy_xo" />
+        <module name="hy_kubes" />
+        <module name="hy_minio" />
+        <module name="hy_admin" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="hy_admin" options="-parameters" />
+      <module name="hy_base" options="-parameters" />
+      <module name="hy_commons" options="-parameters" />
+      <module name="hy_gateway" options="-parameters" />
+      <module name="hy_grpc" options="-parameters" />
+      <module name="hy_kubes" options="-parameters" />
+      <module name="hy_minio" options="-parameters" />
+      <module name="hy_search" options="-parameters" />
+      <module name="hy_sms" options="-parameters" />
+      <module name="hy_socket" options="-parameters" />
+      <module name="hy_utils" options="-parameters" />
+      <module name="hy_xo" options="-parameters" />
+    </option>
+  </component>
+</project>

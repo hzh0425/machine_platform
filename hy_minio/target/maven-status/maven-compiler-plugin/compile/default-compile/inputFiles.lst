@@ -1,0 +1,16 @@
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\restApi\UploadRestApi.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\config\WebSecurityConfig.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\config\Swagger2.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\restApi\fileRestApi.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\util\DownloadTask.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\util\UploadUtil.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\entity\MinIoProperties.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\service\MinioService.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\util\Downloader.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\config\DruidConfig.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\util\Logger.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\global\SysConf.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\util\DownloadFile.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\util\MinIoUtils.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\MinioApplication.java
+D:\Aspringboot\machine_platform\hy_minio\src\main\java\com\moxi\minio\entity\MultipartFileParam.java

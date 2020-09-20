@@ -1,0 +1,52 @@
+syntax="proto3";
+option java_multiple_files=true;
+package com.moxi.file;
+
+/**
+备注:当前token为选填,后面会用于权限认证
+*/
+
+//文件流
+message FileIo{
+  bytes file=1;
+  int32 currentChunk=2;  //当前的分块
+  int32 offset=4;    //当前的偏移量
+  int32 length=5;  //当前的长度
+  bool  isChunkExist=6; //当前请求获取的分块是否存在
+  bool  isAuthority=7;//当前请求者是否具有该资源的权限
+}
+
+
+//请求模板
+message requestTemplate{
+  string bucketName=1;//桶的名字(用户uid)
+  string prefix=2;//文件前缀(文件的uid)
+  int32 currentChunk=3;//要获取哪一块(从1开始)
+  string token=4;//资源令牌,后面用于做权限认证
+}
+//目标文件描述
+message  fileDesc{
+  string fileName=1; //名称
+  int64 fileSize=2; //大小
+  int32 chunkSize=3;//块数
+  bool  isAuthority=4;//当前请求者是否具有该资源的权限
+}
+
+//重传某一块
+message ReSend{
+  int32 currentChunk=2;  //当前的分块
+  int64 offset=4;    //当前的偏移量
+  int64 length=5;  //当前的长度
+}
+
+//重载函数
+service FileService{
+  //1.获取目标文件的某一块,结果会告知总共多少块,当前请求的块是否存在
+  rpc getFileFromOss(requestTemplate) returns (stream FileIo){}
+
+  //2.获取目标文件的描述
+  rpc getFileDesc(requestTemplate)returns (fileDesc){}
+
+  //3.client通知service重传某一块io(做完后再补充该功能)
+  rpc reSendFileIo(ReSend) returns(FileIo){}
+}

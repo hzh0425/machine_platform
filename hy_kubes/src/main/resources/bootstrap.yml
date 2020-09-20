@@ -1,0 +1,15 @@
+server:
+  port: 8012
+spring:
+  application:
+    name: machine-hy-kube
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 124.70.200.174:8848
+        ip: 124.70.200.174
+      config:
+        file-extension: yaml
+        group: machinePlatform
+        server-addr: 124.70.200.174:8848
+

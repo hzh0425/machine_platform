@@ -1,0 +1,23 @@
+server:
+  port: 8017
+spring:
+  application:
+    name: machine-hy-upload
+  cloud:
+    inetutils:
+          ignored-interfaces: eth.*
+    nacos:
+      discovery:
+        server-addr: 124.70.200.174:8848
+        ip: 124.70.200.174
+      config:
+        file-extension: yaml
+        group: machinePlatform
+        server-addr: 124.70.200.174:8848
+  servlet:
+    multipart:
+      max-file-size: 10000MB
+      max-request-size: 10000MB
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true

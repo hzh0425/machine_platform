@@ -1,0 +1,10 @@
+com\moxi\sms\config\RabbitMqConfig.class
+com\moxi\sms\SmsApplication.class
+com\moxi\sms\config\redis\FastJsonRedisSerializer.class
+com\moxi\sms\global\SqlConf.class
+com\moxi\sms\listener\MailListener.class
+com\moxi\sms\listener\SmsListener.class
+com\moxi\sms\config\redis\RedisConfig.class
+com\moxi\sms\util\SendMailUtils.class
+com\moxi\sms\global\SysConf.class
+com\moxi\sms\util\SmsUtil.class

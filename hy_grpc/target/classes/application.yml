@@ -1,0 +1,21 @@
+server:
+  port: 8020
+
+upload:
+  readSize: 3000
+  bufferSize: 8000
+  blockSize: 2000000
+minio:
+  # bucket名称
+  bucket: "trainset"
+  # Minio服务地址
+  host: "http://frp.leavessoft.cn:19000"
+  # 访问路径
+  url: "${minio.host}/"
+  # MINIO_ACCESS_KEY
+  access-key: "creatorcloud"
+  # MINIO_SECRET_KEY
+  secret-key: "creatorcloud"
+
+grpc:
+  port: 9090

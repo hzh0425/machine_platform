@@ -1,0 +1,58 @@
+
+erver:
+  port: 8604
+
+#阿里大于
+accessKeyId: XXXXXXXXXXXXXXXXXXXXX #修改成自己的
+accessKeySecret: XXXXXXXXXXXXXXXXXXXXXXX #修改成自己的
+
+spring:
+  #mail
+  mail:
+    username: hyblog@163.com
+    password: a1313375 #授权码开启SMTP服务里设置
+    host: smtp.163.com
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+          auth: true
+          starttls:
+            enable: false
+
+  application:
+    name: hy-sms
+  elasticsearch:
+    rest:
+      uris: http://124.70.200.174:9200
+  datasource:
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://124.70.200.174:3306/hy_blog?serverTimezone=UTC&characterEncoding=UTF-8
+  redis:
+    host: 49.234.217.207
+    port: 6379
+  rabbitmq:
+    host: 124.70.200.174
+    port: 5672
+
+  cloud:
+    inetutils:
+      ignored-interfaces: eth.*
+    nacos:
+      discovery:
+        server-addr: 124.70.200.174:8848
+        ip: 124.70.200.174
+    # 配置Sentinel流控
+    sentinel:
+      transport:
+        #配置Sentinel dashboard地址
+        dashboard: 121.199.16.65:8858
+        #默认8719端口,如果被占用会向上扫描。
+        port: 8858

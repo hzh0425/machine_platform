@@ -1,0 +1,17 @@
+com\moxi\minio\config\Swagger2.class
+com\moxi\minio\util\UploadUtil.class
+com\moxi\minio\restApi\fileRestApi.class
+com\moxi\minio\service\MinioService.class
+com\moxi\minio\MinioApplication$1.class
+com\moxi\minio\entity\MinIoProperties.class
+com\moxi\minio\util\MinIoUtils.class
+com\moxi\minio\config\DruidConfig.class
+com\moxi\minio\entity\MultipartFileParam.class
+com\moxi\minio\restApi\UploadRestApi.class
+com\moxi\minio\util\DownloadFile.class
+com\moxi\minio\config\WebSecurityConfig.class
+com\moxi\minio\util\DownloadTask.class
+com\moxi\minio\util\Downloader.class
+com\moxi\minio\util\Logger.class
+com\moxi\minio\global\SysConf.class
+com\moxi\minio\MinioApplication.class

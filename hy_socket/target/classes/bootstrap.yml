@@ -1,0 +1,14 @@
+server:
+  port: 8018
+spring:
+  application:
+    name: machine-hy-socket
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 124.70.200.174:8848
+  servlet:
+    multipart:
+      max-file-size: 10000MB
+      max-request-size: 10000MB
+
