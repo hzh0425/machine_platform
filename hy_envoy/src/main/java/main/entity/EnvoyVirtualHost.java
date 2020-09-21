@@ -17,15 +17,10 @@ import java.util.List;
 public class EnvoyVirtualHost {
    public String name;
    public List<String> domains;
-   public EnvoyRoutes routes;
+   public List<EnvoyRoute> routes;
    public EnvoyVirtualHostCors cors;
 
-   @Data
-   @AllArgsConstructor
-   @NoArgsConstructor
-   public static class EnvoyRoutes{
-       List<EnvoyRoute> list;
-   }
+
 
 
 }

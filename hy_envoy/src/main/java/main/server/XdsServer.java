@@ -33,33 +33,31 @@ public class XdsServer {
      */
    public EnvoyRouteConfig initRouteConfig(){
        //1.构建EnvoyVirtualHost
-          EnvoyHostRoute.EnvoyVirtualHosts hosts=new EnvoyHostRoute.EnvoyVirtualHosts();
           EnvoyVirtualHost host=new EnvoyVirtualHost();
           //1.1EnvoyRoutes
-          EnvoyVirtualHost.EnvoyRoutes routes=new EnvoyVirtualHost.EnvoyRoutes();
-          routes.setList(envoyRouteList);
           //1.2EnvoyVirtualHostCors
           EnvoyVirtualHostCors cors=new EnvoyVirtualHostCors();
           cors.setAllow_headers("keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout,authorization");
           cors.setAllow_methods("GET, PUT, DELETE, POST, OPTIONS");
           cors.setMax_age("1728000");
+          cors.setExpose_headers("custom-header-1,grpc-status,grpc-message");
           //1.2.1 EnvoyVitrualHostAllowOrigins
           List<EnvoyVirtualHostCors.EnvoyVitrualHostAllowOrigin> allowOrigins=new ArrayList<>();
           allowOrigins.add(new EnvoyVirtualHostCors.EnvoyVitrualHostAllowOrigin("*"));
           cors.setAllow_origin_string_match(allowOrigins);
           //1.3 build host
           host.setName("grpc_web_server");
-          host.setDomains(new ArrayList<String>());
-          host.setRoutes(routes);
+
+          host.setDomains(new ArrayList<String>(){{add("*");}});
+          host.setRoutes(envoyRouteList);
           host.setCors(cors);
           //1.4 hosts
           List<EnvoyVirtualHost> hostList=new ArrayList<>();
           hostList.add(host);
-          hosts.setList(hostList);
        //2.构建EnvoyHostRoute
           EnvoyHostRoute hostRoute=new EnvoyHostRoute();
           hostRoute.setName("ingress_web_grpc");
-          hostRoute.setVirtual_hosts(hosts);
+          hostRoute.setVirtual_hosts(hostList);
        //3. 构建route resources
           List<EnvoyHostRoute> routeList=new ArrayList<>();
           routeList.add(hostRoute);
@@ -70,8 +68,7 @@ public class XdsServer {
           return config;
    }
    public EnvoyClustersConfig initClusterConfig(){
-
-       return new EnvoyClustersConfig("0",new EnvoyClustersConfig.EnvoyClusters(new ArrayList<>()));
+       return new EnvoyClustersConfig("0",new ArrayList<>());
    }
     /**
      * 增加代理
@@ -88,7 +85,7 @@ public class XdsServer {
         routeItem=buildRouteItem(proxy_id);
         clusterItem=buildClusterItem(proxy_id,cluster_ip,port);
         this.envoyRouteList.add(routeItem);
-        this.GrpcClusterConfig.resources.getList().add(clusterItem);
+        this.GrpcClusterConfig.resources.add(clusterItem);
         return true;
     }
     public EnvoyRoute buildRouteItem(String proxy_id){
@@ -115,18 +112,16 @@ public class XdsServer {
         //2.LbEnvoyEndpoints
         List<EnvoyLoadAssignment.LbEnvoyEndpoint> lbEnvoyEndpointList=new ArrayList<>();
         lbEnvoyEndpointList.add(new EnvoyLoadAssignment.LbEnvoyEndpoint(endpoints));
-        EnvoyLoadAssignment.LbEnvoyEndpoints lbEnvoyEndpoints=new EnvoyLoadAssignment.LbEnvoyEndpoints();
-        lbEnvoyEndpoints.setList(lbEnvoyEndpointList);
         //3.EnvoyLoadAssignment
         EnvoyLoadAssignment assignment=new EnvoyLoadAssignment();
         assignment.setCluster_name(("cluster-"+proxy_id).toLowerCase());
-        assignment.setEndpoints(lbEnvoyEndpoints);
+        assignment.setEndpoints(lbEnvoyEndpointList);
         //4.cluster
         EnvoyCluster cluster=new EnvoyCluster();
         cluster.setName(("cluster-"+proxy_id).toLowerCase());
         cluster.setConnect_timeout("0.5s");
         cluster.setType("static");
-        cluster.setHttp2_protocol_options(new Object());
+        cluster.setHttp2_protocol_options(null);
         cluster.setLb_policy("round_robin");
         cluster.setLoad_assignment(assignment);
         return cluster;

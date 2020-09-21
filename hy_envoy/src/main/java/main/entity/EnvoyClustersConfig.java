@@ -16,12 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 public class EnvoyClustersConfig {
     public String version_info;
-    public EnvoyClusters resources;
+    public List<EnvoyCluster> resources;
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class EnvoyClusters{
-        List<EnvoyCluster> list;
-    }
 }

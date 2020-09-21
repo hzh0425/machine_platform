@@ -37,7 +37,7 @@ public class EnvoyCluster {
 
     public String type;
 
-    public Object http2_protocol_options;
+    public String http2_protocol_options;
 
     public String lb_policy;
 

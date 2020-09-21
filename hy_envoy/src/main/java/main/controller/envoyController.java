@@ -4,9 +4,7 @@ import main.entity.EnvoyClustersConfig;
 import main.entity.EnvoyRouteConfig;
 import main.server.XdsServer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author hzh
@@ -18,15 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class envoyController {
     @Autowired
     XdsServer xdsServer;
-    @GetMapping("/discovery:routes")
+    @PostMapping("/discovery:routes")
     public EnvoyRouteConfig RDSDiscoveryServer(){
        return xdsServer.GrpcRouteConfig;
     }
-    @GetMapping("/discovery:clusters")
+    @PostMapping("/discovery:clusters")
     public EnvoyClustersConfig CDSDiscoveryServer(){
         return xdsServer.GrpcClusterConfig;
     }
-
+    @PostMapping("/add")
+    public String add(@RequestParam("proxy")String proxy, @RequestParam("cluster")String cluster, @RequestParam("port")int port){
+        xdsServer.AddGrpcWebVirtualHostRoute(proxy,cluster,port);
+        return "success";
+    }
 
 
 }

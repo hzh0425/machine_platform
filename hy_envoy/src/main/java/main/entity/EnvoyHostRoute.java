@@ -19,13 +19,7 @@ public class EnvoyHostRoute {
     @JsonProperty("@type")
     public String _type="type.googleapis.com/envoy.api.v2.RouteConfiguration";
     public String name;
-    public EnvoyVirtualHosts virtual_hosts;
+    public List<EnvoyVirtualHost> virtual_hosts;
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class EnvoyVirtualHosts{
-        List<EnvoyVirtualHost> list;
-    }
 
 }
