@@ -26,6 +26,7 @@
         <module>hy_socket</module>
         <module>hy_grpc</module>
         <module>hy_kubes</module>
+        <module>hy_envoy</module>
     </modules>
     <packaging>pom</packaging>
     <name>hy_machine_platform</name>

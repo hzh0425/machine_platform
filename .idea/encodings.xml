@@ -4,6 +4,7 @@
     <file url="file://$PROJECT_DIR$/hy_admin/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hy_base/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hy_commons/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hy_envoy/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hy_gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hy_grpc/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hy_kubes/src/main/java" charset="UTF-8" />

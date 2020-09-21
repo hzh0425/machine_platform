@@ -9,15 +9,16 @@
         <module name="hy_sms" />
         <module name="hy_utils" />
         <module name="hy_socket" />
+        <module name="hy_envoy" />
         <module name="hy_search" />
         <module name="hy_base" />
+        <module name="hy_grpc" />
         <module name="hy_gateway" />
         <module name="hy_commons" />
-        <module name="hy_grpc" />
-        <module name="hy_xo" />
+        <module name="hy_admin" />
         <module name="hy_kubes" />
         <module name="hy_minio" />
-        <module name="hy_admin" />
+        <module name="hy_xo" />
       </profile>
     </annotationProcessing>
   </component>
@@ -26,6 +27,7 @@
       <module name="hy_admin" options="-parameters" />
       <module name="hy_base" options="-parameters" />
       <module name="hy_commons" options="-parameters" />
+      <module name="hy_envoy" options="-parameters" />
       <module name="hy_gateway" options="-parameters" />
       <module name="hy_grpc" options="-parameters" />
       <module name="hy_kubes" options="-parameters" />
