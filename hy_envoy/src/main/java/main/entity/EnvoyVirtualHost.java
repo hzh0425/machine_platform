@@ -23,7 +23,7 @@ public class EnvoyVirtualHost {
    @Data
    @AllArgsConstructor
    @NoArgsConstructor
-   public class EnvoyRoutes{
+   public static class EnvoyRoutes{
        List<EnvoyRoute> list;
    }
 

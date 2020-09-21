@@ -31,13 +31,19 @@ public class EnvoyLoadAssignment {
 
     public String cluster_name;
 
-    public  LbEnvoyEndpoint endpoints;
-
+    public  LbEnvoyEndpoints endpoints;
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class LbEnvoyEndpoint{
+    public static class LbEnvoyEndpoints{
+        List<LbEnvoyEndpoint> list;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class LbEnvoyEndpoint{
         public List<EnvoyEndpoint> lb_endpoints;
     }
 

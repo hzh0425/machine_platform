@@ -21,7 +21,7 @@ public class EnvoyClustersConfig {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class EnvoyClusters{
+    public static class EnvoyClusters{
         List<EnvoyCluster> list;
     }
 }

@@ -28,7 +28,7 @@ public class EnvoyVirtualHostCors {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class EnvoyVitrualHostAllowOrigin{
+    public static class EnvoyVitrualHostAllowOrigin{
         public String prefix;
     }
 

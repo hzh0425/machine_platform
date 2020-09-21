@@ -11,7 +11,8 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @ComponentScan(basePackages = {
-        "main.controller"
+        "main.controller",
+        "main.server"
 })
 public class webApplication {
     public static void main(String[] args) {

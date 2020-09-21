@@ -22,19 +22,19 @@ public class EnvoyEndpoint {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class EnvoyEndpointAddress{
+    public static class EnvoyEndpointAddress{
         public EnvoyEndpointSocketAddress address;
     }
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class EnvoyEndpointSocketAddress{
+    public static class EnvoyEndpointSocketAddress{
         public EnvoyEndpointAddressSocket socket_address;
     }
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class EnvoyEndpointAddressSocket{
+    public static class EnvoyEndpointAddressSocket{
         public String address;
         public int port_value;
     }

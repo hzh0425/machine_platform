@@ -24,7 +24,7 @@ public class EnvoyHostRoute {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class EnvoyVirtualHosts{
+    public static class EnvoyVirtualHosts{
         List<EnvoyVirtualHost> list;
     }
 

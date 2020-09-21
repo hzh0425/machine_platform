@@ -20,14 +20,14 @@ public class EnvoyRoute {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class EnvoyRouteMatch{
+    public static class EnvoyRouteMatch{
         public String prefix;
     }
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class EnvoyRouteDetail{
+    public static class EnvoyRouteDetail{
         public String prefix_rewrite;
 
         public String cluster;
