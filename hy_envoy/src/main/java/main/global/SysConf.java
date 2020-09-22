@@ -13,4 +13,5 @@ public class SysConf {
     public final static String GRPC_WEB="/grpc_web/";
     public final static String FILE_SEGMENT="/";
     public final static String GRPC_TIMEOUT="0s";
+    public final static String INCRE_VERSION="incre_proxy_version";
 }

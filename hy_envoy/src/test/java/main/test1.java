@@ -1,5 +1,8 @@
 package main;
 
+import main.bean.XdsCluster;
+import main.entity.EnvoyClustersConfig;
+import main.mapper.xdsMapper;
 import main.server.XdsServer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,14 +20,5 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class test1 {
     @Autowired
     XdsServer server;
-    @Test
-    public void test1(){
-        String cluster_ip="127.0.0.1";
-        String proxy="asoigjfqojit";
-        int port=8013;
-        server.AddGrpcWebVirtualHostRoute(proxy,cluster_ip,port);
-        System.out.println(server.GrpcRouteConfig);
-        System.out.println("success");
-        System.out.println(server.GrpcClusterConfig);
-    }
+    
 }
