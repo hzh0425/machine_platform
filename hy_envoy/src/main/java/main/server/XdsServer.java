@@ -1,6 +1,7 @@
 package main.server;
 
 import main.entity.*;
+import main.global.SysConf;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -91,19 +92,21 @@ public class XdsServer {
     public EnvoyRoute buildRouteItem(String proxy_id){
         //1 EnvoyRouteMatch
         EnvoyRoute.EnvoyRouteMatch match=new EnvoyRoute.EnvoyRouteMatch();
-        match.setPrefix(("/grpc_web/"+proxy_id+"/").toLowerCase());
+        match.setPrefix((SysConf.GRPC_WEB+proxy_id+SysConf.FILE_SEGMENT).toLowerCase());
         //2 EnvoyRouteDetail
         EnvoyRoute.EnvoyRouteDetail detail=new EnvoyRoute.EnvoyRouteDetail();
-        detail.setPrefix_rewrite("/");
-        detail.setCluster(("cluster-"+proxy_id).toLowerCase());
-        detail.setMax_grpc_timeout("0s");
+        detail.setPrefix_rewrite(SysConf.FILE_SEGMENT);
+        detail.setCluster((SysConf.CLUSTER+proxy_id).toLowerCase());
+        detail.setMax_grpc_timeout(SysConf.GRPC_TIMEOUT);
         //3.route
-        EnvoyRoute route=new EnvoyRoute();
-        route.setMatch(match);
-        route.setRoute(detail);
+        EnvoyRoute route=new EnvoyRoute.EnvoyRouteBuilder()
+                .setMatch(match)
+                .setRoute(detail)
+                .build();
         return route;
     }
     public EnvoyCluster buildClusterItem(String proxy_id,String cluster_ip,int port){
+        String clusterKey=(SysConf.CLUSTER+proxy_id).toLowerCase();
         //1.LbEnvoyEndpoints
         //1.EnvoyEndpoints
         EnvoyEndpoint envoyEndpoint=new EnvoyEndpoint(new EnvoyEndpoint.EnvoyEndpointAddress(new EnvoyEndpoint.EnvoyEndpointSocketAddress(new EnvoyEndpoint.EnvoyEndpointAddressSocket(cluster_ip,port))));
@@ -114,16 +117,17 @@ public class XdsServer {
         lbEnvoyEndpointList.add(new EnvoyLoadAssignment.LbEnvoyEndpoint(endpoints));
         //3.EnvoyLoadAssignment
         EnvoyLoadAssignment assignment=new EnvoyLoadAssignment();
-        assignment.setCluster_name(("cluster-"+proxy_id).toLowerCase());
+        assignment.setCluster_name(clusterKey);
         assignment.setEndpoints(lbEnvoyEndpointList);
         //4.cluster
-        EnvoyCluster cluster=new EnvoyCluster();
-        cluster.setName(("cluster-"+proxy_id).toLowerCase());
-        cluster.setConnect_timeout("0.5s");
-        cluster.setType("static");
-        cluster.setHttp2_protocol_options(null);
-        cluster.setLb_policy("round_robin");
-        cluster.setLoad_assignment(assignment);
+        EnvoyCluster cluster=new EnvoyCluster.EnvoyClusterBuilder()
+                .setName(clusterKey)
+                .setConnect_timeout(SysConf.TIME_OUT)
+                .setHttp2_protocol_options(null)
+                .setLb_policy(SysConf.ROUND_ROBIN)
+                .setLoad_assignment(assignment)
+                .setType(SysConf.STATIC)
+                .build();
         return cluster;
     }
 }

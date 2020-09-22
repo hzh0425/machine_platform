@@ -42,4 +42,66 @@ public class EnvoyCluster {
     public String lb_policy;
 
     public EnvoyLoadAssignment load_assignment;
+
+    public EnvoyCluster(EnvoyClusterBuilder b){
+        this.name=b.name;
+        this.connect_timeout=b.connect_timeout;
+        this.type=b.type;
+        this.http2_protocol_options=b.http2_protocol_options;
+        this.lb_policy=b.lb_policy;
+        this.load_assignment=b.load_assignment;
+    }
+
+
+    public static class EnvoyClusterBuilder{
+        @JsonProperty("@type")
+        public String _type="type.googleapis.com/envoy.api.v2.Cluster";
+        public String name;
+
+        public String connect_timeout;
+
+        public String type;
+
+        public String http2_protocol_options;
+
+        public String lb_policy;
+
+        public EnvoyLoadAssignment load_assignment;
+
+        public EnvoyClusterBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public EnvoyClusterBuilder setConnect_timeout(String connect_timeout) {
+            this.connect_timeout = connect_timeout;
+            return this;
+        }
+
+        public EnvoyClusterBuilder setType(String type) {
+            this.type = type;
+            return this;
+        }
+
+
+        public EnvoyClusterBuilder setHttp2_protocol_options(String http2_protocol_options) {
+            this.http2_protocol_options = http2_protocol_options;
+            return this;
+        }
+
+        public EnvoyClusterBuilder setLb_policy(String lb_policy) {
+            this.lb_policy = lb_policy;
+            return this;
+        }
+
+
+        public EnvoyClusterBuilder setLoad_assignment(EnvoyLoadAssignment load_assignment) {
+            this.load_assignment = load_assignment;
+            return this;
+        }
+
+        public EnvoyCluster build(){
+            return new EnvoyCluster(this);
+        }
+    }
 }

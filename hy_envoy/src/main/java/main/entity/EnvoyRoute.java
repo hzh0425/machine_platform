@@ -17,6 +17,32 @@ public class EnvoyRoute {
     public EnvoyRouteMatch match;
     public EnvoyRouteDetail route;
 
+
+
+    public static class EnvoyRouteBuilder{
+        public EnvoyRouteMatch match;
+        public EnvoyRouteDetail route;
+
+        public EnvoyRouteBuilder setMatch(EnvoyRouteMatch match) {
+            this.match = match;
+            return this;
+        }
+
+        public EnvoyRouteBuilder setRoute(EnvoyRouteDetail route) {
+            this.route = route;
+            return this;
+        }
+
+        public EnvoyRoute build(){
+            return new EnvoyRoute(this);
+        }
+    }
+
+    public EnvoyRoute(EnvoyRouteBuilder b){
+        this.match=b.match;
+        this.route=b.route;
+    }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
