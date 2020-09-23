@@ -1,0 +1,34 @@
+node:
+  id: envoy1
+  cluster: local_cluster
+admin:
+  access_log_path: /tmp/admin_access.log
+  address:
+    socket_address: { address: 127.0.0.1, port_value: 9901 }
+
+dynamic_resources:
+  lds_config:
+    api_config_source:
+      api_type: REST
+      transport_api_version: V2
+      cluster_names:
+        - ext-authz
+      refresh_delay: 5s
+  cds_config:
+    api_config_source:
+      api_type: REST
+      transport_api_version: V2
+      cluster_names:
+        - ext-authz
+      refresh_delay: 5s
+
+static_resources:
+  clusters:
+    - name: ext-authz
+      connect_timeout: 3s
+      type: logical_dns
+      lb_policy: round_robin
+      hosts:
+        - socket_address:
+            address: 124.70.200.174
+            port_value: 8020

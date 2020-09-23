@@ -1,8 +1,6 @@
 package main;
 
-import main.bean.XdsCluster;
-import main.entity.EnvoyClustersConfig;
-import main.mapper.xdsMapper;
+
 import main.server.XdsServer;
 import org.junit.Test;
 import org.junit.runner.RunWith;

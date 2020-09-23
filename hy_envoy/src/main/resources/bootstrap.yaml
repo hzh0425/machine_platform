@@ -1,0 +1,16 @@
+server:
+  port: 8020
+spring:
+  application:
+    name: machine-hy-envoy
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 124.70.200.174:8848
+        #ip: 124.70.200.174
+      config:
+        file-extension: yaml
+        group: machinePlatform
+        server-addr: 124.70.200.174:8848
+# redisson lock
+redisson.address: redis://localhost:6379

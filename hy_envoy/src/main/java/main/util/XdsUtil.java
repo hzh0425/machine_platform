@@ -8,6 +8,7 @@ import main.global.SysConf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @Component
 public class XdsUtil {
+    private int basePort=30000;
     public EnvoyCluster buildClusterItem(String proxy_id,String cluster_ip,int port){
         String clusterKey=(SysConf.CLUSTER+proxy_id).toLowerCase();
         //1.LbEnvoyEndpoints
@@ -39,7 +41,6 @@ public class XdsUtil {
                 .setHttp2_protocol_options(null)
                 .setLb_policy(SysConf.ROUND_ROBIN)
                 .setLoad_assignment(assignment)
-                .setType(SysConf.STATIC)
                 .build();
         return cluster;
     }
@@ -49,14 +50,15 @@ public class XdsUtil {
         //listener
         EnvoyListener listener=new EnvoyListener.EnvoyListenerBuilder()
                 .setAddress(
-                        new EnvoyListener.EnvoyEndpointSocketAddress(new EnvoyEndpoint.EnvoyEndpointAddressSocket(cluster_ip,port))
+                        new EnvoyListener.EnvoyEndpointSocketAddress(
+                                new EnvoyEndpoint.EnvoyEndpointAddressSocket("0.0.0.0",basePort))
                 )
                 .setFilter_chains(new ArrayList<EnvoyListener.EnvoyFilters>(){{
                     add(new EnvoyListener.EnvoyFilters(new ArrayList<EnvoyFilter>(){{
                         add(filter);
                     }}));
                 }})
-                .setName((SysConf.CLUSTER+proxy_id).toLowerCase())
+                .setName((SysConf.LISTENER+proxy_id).toLowerCase())
                 .build();
         return listener;
     }
@@ -95,13 +97,13 @@ public class XdsUtil {
                 .setCodec_type("AUTO")
                 .setStat_prefix("ingress_http")
                 .setHttp_filters(new ArrayList<EnvoyFilterConfig.filter>(){{
-                    add(new EnvoyFilterConfig.filter("envoy.filters.http.cors"));
-                    add(new EnvoyFilterConfig.filter("envoy.filters.http.grpc_web"));
-                    add(new EnvoyFilterConfig.filter("envoy.filters.http.router"));
+                    add(new EnvoyFilterConfig.filter("envoy.cors"));
+                    add(new EnvoyFilterConfig.filter("envoy.grpc_web"));
+                    add(new EnvoyFilterConfig.filter("envoy.router"));
                 }})
                 .build();
         //4.构建filter
-        EnvoyFilter filter=new EnvoyFilter(" envoy.filters.network.http_connection_manager",
+        EnvoyFilter filter=new EnvoyFilter("envoy.http_connection_manager",
                 filterConfig);
         return filter;
     }

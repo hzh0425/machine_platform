@@ -2,6 +2,7 @@ package main.server;
 
 import com.alibaba.fastjson.JSON;
 import main.bean.XdsCluster;
+import main.bean.XdsListener;
 import main.entity.*;
 import main.entity.listener.EnvoyFilter;
 import main.entity.listener.EnvoyFilterConfig;
@@ -9,9 +10,11 @@ import main.entity.listener.EnvoyListener;
 import main.entity.listener.EnvoyListenerConfig;
 import main.global.SysConf;
 import main.mapper.XdsClusterMapper;
+import main.mapper.XdsListenerMapper;
 import main.util.RedissLockUtil;
 import main.util.XdsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -35,32 +38,46 @@ public class XdsServer {
     RedissLockUtil lockUtil;
     @Autowired
     XdsUtil xdsUtil;
+    @Resource
+    XdsListenerMapper listenerMapper;
+
    AtomicInteger integer=new AtomicInteger(0);
+
    public  EnvoyClustersConfig GrpcClusterConfig;
    public EnvoyListenerConfig GrpcLinsterConfig;
-   public List<EnvoyListener> envoyListenerList;
-   public List<EnvoyRoute> envoyRouteList;
-   public final static String route_type="type.googleapis.com/envoy.api.v2.RouteConfiguration";
+
    @PostConstruct
    public void init(){
-       this.envoyListenerList=new ArrayList<>();
        this.GrpcClusterConfig=initClusterConfig();
        this.GrpcLinsterConfig=initListenerConfig();
    }
 
     /**
-     * 初始化route config
+     * 初始化cluster config
      * @return
      */
    public EnvoyClustersConfig initClusterConfig(){
        //从数据库获取最大的版本
+       EnvoyClustersConfig config=null;
        XdsCluster cluster=clusterMapper.getMaxVersionCluster();
-       String json=cluster.getJson();
-       EnvoyClustersConfig config= JSON.parseObject(json,EnvoyClustersConfig.class);
+       if(cluster!=null){
+           String json=cluster.getJson();
+           config= JSON.parseObject(json,EnvoyClustersConfig.class);
+       }else{
+           config=new EnvoyClustersConfig("0",new ArrayList<EnvoyCluster>());
+       }
        return config;
    }
    public EnvoyListenerConfig initListenerConfig(){
-       return new EnvoyListenerConfig("0",envoyListenerList);
+       EnvoyListenerConfig config=null;
+       XdsListener listener=listenerMapper.getMaxVersionListener();
+       if(listener!=null){
+           String json=listener.getJson();
+           config=JSON.parseObject(json,EnvoyListenerConfig.class);
+       }else{
+           config=new EnvoyListenerConfig("0",new ArrayList<EnvoyListener>());
+       }
+       return config;
    }
     /**
      * 增加代理
@@ -76,20 +93,29 @@ public class XdsServer {
             //构建route
             clusterItem=xdsUtil.buildClusterItem(proxy_id,cluster_ip,port);
             listener= xdsUtil.buildListenerConfig(proxy_id,cluster_ip,port);
-            this.envoyListenerList.add(listener);
+            this.GrpcLinsterConfig.resources.add(listener);
             this.GrpcClusterConfig.resources.add(clusterItem);
             //保存到mysql
-            //1.cluster
-            XdsCluster cluster=new XdsCluster();
-            cluster.setJson(JSON.toJSONString(this.GrpcClusterConfig));
-            cluster.setVersion(Integer.parseInt(version));
-            cluster.setCreate_date(new Date());
-            cluster.insert();
-            RedissLockUtil.unlock(SysConf.INCRE_VERSION);
-            //2.listener
-
+            saveConfigJsonToMysql(version);
             return true;
         }else return false;
+    }
+    @Async
+    public boolean saveConfigJsonToMysql(String version){
+        //1.cluster
+        XdsCluster cluster=new XdsCluster();
+        cluster.setJson(JSON.toJSONString(this.GrpcClusterConfig));
+        cluster.setVersion(Integer.parseInt(version));
+        cluster.setCreate_date(new Date());
+        cluster.insert();
+        RedissLockUtil.unlock(SysConf.INCRE_VERSION);
+        //2.listener
+        XdsListener xdsListener=new XdsListener();
+        xdsListener.setCreate_date(new Date());
+        xdsListener.setJson(JSON.toJSONString(this.GrpcLinsterConfig));
+        xdsListener.setVersion(Integer.parseInt(version));
+        xdsListener.insert();
+        return true;
     }
 
 }
