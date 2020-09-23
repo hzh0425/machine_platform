@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Component
 public class XdsUtil {
-    private int basePort=30000;
+    private int basePort=10000;
     public EnvoyCluster buildClusterItem(String proxy_id,String cluster_ip,int port){
         String clusterKey=(SysConf.CLUSTER+proxy_id).toLowerCase();
         //1.LbEnvoyEndpoints
@@ -38,8 +38,10 @@ public class XdsUtil {
         EnvoyCluster cluster=new EnvoyCluster.EnvoyClusterBuilder()
                 .setName(clusterKey)
                 .setConnect_timeout(SysConf.TIME_OUT)
-                .setHttp2_protocol_options(null)
+                .setType(SysConf.TYPE_LOGIC)
                 .setLb_policy(SysConf.ROUND_ROBIN)
+                .setHttp2_protocol_options(new EnvoyCluster.http2_options())
+                .setDns_lookup_family(SysConf.V4_ONLY)
                 .setLoad_assignment(assignment)
                 .build();
         return cluster;
@@ -66,29 +68,21 @@ public class XdsUtil {
         //1.构建EnvoyVirtualHost
         EnvoyVirtualHost host=new EnvoyVirtualHost();
         //1.1EnvoyRoutes
-        //1.2EnvoyVirtualHostCors
-        EnvoyVirtualHostCors cors=new EnvoyVirtualHostCors();
-        cors.setAllow_headers("keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout,authorization");
-        cors.setAllow_methods("GET, PUT, DELETE, POST, OPTIONS");
-        cors.setMax_age("1728000");
-        cors.setExpose_headers("custom-header-1,grpc-status,grpc-message");
         //1.2.1 EnvoyVitrualHostAllowOrigins
         List<EnvoyVirtualHostCors.EnvoyVitrualHostAllowOrigin> allowOrigins=new ArrayList<>();
         allowOrigins.add(new EnvoyVirtualHostCors.EnvoyVitrualHostAllowOrigin("*"));
-        cors.setAllow_origin_string_match(allowOrigins);
         //1.3 build host
         host.setName("grpc_web_server");
         host.setDomains(new ArrayList<String>(){{add("*");}});
         host.setRoutes(new ArrayList<EnvoyRoute>(){{
             add(buildRouteItem(proxy_Id));
         }});
-        host.setCors(cors);
         //1.4 hosts
         List<EnvoyVirtualHost> hostList=new ArrayList<>();
         hostList.add(host);
         //2.构建 EnvoyRouteConfig
         main.entity.listener.EnvoyRouteConfig routeConfig=new main.entity.listener.EnvoyRouteConfig();
-        routeConfig.setName("ingress_web_grpc");
+        routeConfig.setName("local_route");
         routeConfig.setVirtual_hosts(hostList);
         //3.构建httpfilters
         //3.1 EnvoyFilterConfig
@@ -97,8 +91,6 @@ public class XdsUtil {
                 .setCodec_type("AUTO")
                 .setStat_prefix("ingress_http")
                 .setHttp_filters(new ArrayList<EnvoyFilterConfig.filter>(){{
-                    add(new EnvoyFilterConfig.filter("envoy.cors"));
-                    add(new EnvoyFilterConfig.filter("envoy.grpc_web"));
                     add(new EnvoyFilterConfig.filter("envoy.router"));
                 }})
                 .build();
@@ -113,9 +105,7 @@ public class XdsUtil {
         match.setPrefix(SysConf.FILE_SEGMENT);
         //2 EnvoyRouteDetail
         EnvoyRoute.EnvoyRouteDetail detail=new EnvoyRoute.EnvoyRouteDetail();
-        detail.setPrefix_rewrite(SysConf.FILE_SEGMENT);
         detail.setCluster((SysConf.CLUSTER+proxy_id).toLowerCase());
-        detail.setMax_grpc_timeout(SysConf.GRPC_TIMEOUT);
         //3.route
         EnvoyRoute route=new EnvoyRoute.EnvoyRouteBuilder()
                 .setMatch(match)

@@ -57,7 +57,5 @@ public class EnvoyRoute {
         public String prefix_rewrite;
 
         public String cluster;
-
-        public String max_grpc_timeout;
     }
 }

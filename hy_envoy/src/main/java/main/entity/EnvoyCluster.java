@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author hzh
  * @version 1.0
@@ -35,13 +37,17 @@ public class EnvoyCluster {
 
     public String connect_timeout;
 
-    public String type;
+    public String type="logical_dns";
 
-    public String http2_protocol_options;
+    public http2_options http2_protocol_options;
 
     public String lb_policy;
 
+    public String dns_lookup_family;
+
     public EnvoyLoadAssignment load_assignment;
+
+
 
     public EnvoyCluster(EnvoyClusterBuilder b){
         this.name=b.name;
@@ -50,9 +56,13 @@ public class EnvoyCluster {
         this.http2_protocol_options=b.http2_protocol_options;
         this.lb_policy=b.lb_policy;
         this.load_assignment=b.load_assignment;
+        this.dns_lookup_family=b.dns_lookup_family;
     }
 
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class EnvoyClusterBuilder{
         @JsonProperty("@type")
         public String _type="type.googleapis.com/envoy.api.v2.Cluster";
@@ -62,11 +72,19 @@ public class EnvoyCluster {
 
         public String type;
 
-        public String http2_protocol_options;
+        public http2_options http2_protocol_options;
 
         public String lb_policy;
 
+        public String dns_lookup_family;
+
         public EnvoyLoadAssignment load_assignment;
+
+
+        public EnvoyClusterBuilder setDns_lookup_family(String dns_lookup_family) {
+            this.dns_lookup_family = dns_lookup_family;
+            return this;
+        }
 
         public EnvoyClusterBuilder setName(String name) {
             this.name = name;
@@ -84,7 +102,7 @@ public class EnvoyCluster {
         }
 
 
-        public EnvoyClusterBuilder setHttp2_protocol_options(String http2_protocol_options) {
+        public EnvoyClusterBuilder setHttp2_protocol_options(http2_options http2_protocol_options) {
             this.http2_protocol_options = http2_protocol_options;
             return this;
         }
@@ -104,4 +122,11 @@ public class EnvoyCluster {
             return new EnvoyCluster(this);
         }
     }
+
+    @Data
+    @NoArgsConstructor
+    public static class http2_options implements Serializable {
+        String option;
+    }
+
 }

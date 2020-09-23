@@ -18,5 +18,4 @@ public class EnvoyVirtualHost {
    public String name;
    public List<String> domains;
    public List<EnvoyRoute> routes;
-   public EnvoyVirtualHostCors cors;
 }

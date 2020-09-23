@@ -39,6 +39,7 @@ main\util\RedissLockUtil.class
 main\util\XdsUtil$2.class
 main\bean\XdsListener.class
 main\entity\EnvoyEndpoint$EnvoyEndpointSocketAddress.class
+main\entity\EnvoyCluster$http2_options.class
 main\entity\EnvoyEndpoint$EnvoyEndpointAddressSocket.class
 main\entity\EnvoyVirtualHostCors$EnvoyVitrualHostAllowOrigin.class
 main\entity\EnvoyClustersConfig.class
