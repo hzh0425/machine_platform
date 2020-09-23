@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * @author hzh
@@ -82,20 +83,35 @@ public class XdsServer {
     /**
      * 增加代理
      */
-    public boolean AddGrpcWebVirtualHostRoute(String proxy_id,String cluster_ip,int port){
+    public boolean AddGrpcWebProxy(String proxy_id,String cluster_ip,int port){
         //1.先尝试获取锁
         if(RedissLockUtil.tryLock(SysConf.INCRE_VERSION, TimeUnit.SECONDS,10,10)){
             EnvoyCluster clusterItem=null;
             EnvoyListener listener=null;
-            String version=integer.getAndAdd(1)+"";
+            String version=integer.incrementAndGet()+"";
             this.GrpcLinsterConfig.version_info=version;
             this.GrpcClusterConfig.version_info=version;
             //构建route
             clusterItem=xdsUtil.buildClusterItem(proxy_id,cluster_ip,port);
-            listener= xdsUtil.buildListenerConfig(proxy_id,cluster_ip,port);
+            listener= xdsUtil.buildListenerConfig(proxy_id,integer.get());
             this.GrpcLinsterConfig.resources.add(listener);
             this.GrpcClusterConfig.resources.add(clusterItem);
             //保存到mysql
+            saveConfigJsonToMysql(version);
+            return true;
+        }else return false;
+    }
+    public boolean deleteGrpcWebProxy(String proxyId){
+        if(RedissLockUtil.tryLock(SysConf.INCRE_VERSION, TimeUnit.SECONDS,10,10)){
+            String version=integer.incrementAndGet()+"";
+            this.GrpcClusterConfig.setVersion_info(version);
+            this.GrpcLinsterConfig.setVersion_info(version);
+            //遍历listener,删除proxy
+            String listenerKey=(SysConf.LISTENER+proxyId).toLowerCase();
+            this.GrpcLinsterConfig.setResources(this.GrpcLinsterConfig.getResources().stream().filter(x->!x.getName().equals(listenerKey)).collect(Collectors.toList()));
+            //遍历cluster 删除
+            String clusterKey=(SysConf.CLUSTER+proxyId).toLowerCase();
+            this.GrpcClusterConfig.setResources(this.GrpcClusterConfig.getResources().stream().filter(x->!x.getName().equals(clusterKey)).collect(Collectors.toList()));
             saveConfigJsonToMysql(version);
             return true;
         }else return false;

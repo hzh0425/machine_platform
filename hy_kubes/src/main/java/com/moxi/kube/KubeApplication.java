@@ -3,6 +3,7 @@ package com.moxi.kube;
 import org.checkerframework.checker.units.qual.K;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
@@ -19,8 +20,10 @@ import org.springframework.context.annotation.ComponentScan;
         "com.moxi.xo.utils",
         "com.moxi.xo.service",
         "com.moxi.commons.config",
+        "com.moxi.commons.feign",
         "com.moxi.utils"
 })
+@EnableFeignClients(basePackages = {"com.moxi.commons.feign"})
 public class KubeApplication {
     public static void main(String[] args) {
         SpringApplication.run(KubeApplication.class,args);

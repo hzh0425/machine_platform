@@ -20,15 +20,14 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/v2")
-@Api("代理相关接口")
-public class envoyController {
+@Api(value = "envoy服务发现相关接口", tags = {"envoy服务发现相关接口"})
+public class DiscoveryRestApi {
     static{
         ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
     }
     @Autowired
     XdsServer xdsServer;
-    @Resource
-    xdsMapper xdsMapper;
+
     @PostMapping("/discovery:listeners")
     public EnvoyListenerConfig LDSDiscoveryServer(){
        return xdsServer.GrpcLinsterConfig;
@@ -38,20 +37,15 @@ public class envoyController {
         return xdsServer.GrpcClusterConfig;
     }
 
+
     @PostMapping("/add")
-    public String add(@RequestParam("proxy")String proxy, @RequestParam("cluster")String cluster, @RequestParam("port")int port){
-        xdsServer.AddGrpcWebVirtualHostRoute(proxy,cluster,port);
-        return "success";
+    public boolean add(@RequestParam("proxyId")String proxy, @RequestParam("cluster_ip")String cluster, @RequestParam("port")int port){
+        return xdsServer.AddGrpcWebProxy(proxy,cluster,port);
     }
 
-    @GetMapping("/test")
-    public EnvoyClustersConfig test(){
-        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
-        XdsCluster cluster=xdsMapper.getMaxVersionCluster();
-        String json=cluster.getJson();
-        System.out.println(json);
-        EnvoyClustersConfig config= JSON.parseObject(json,EnvoyClustersConfig.class);
-        return config;
+    @PostMapping("/delete")
+    public boolean delete(@RequestParam("proxyId")String proxy){
+        return xdsServer.deleteGrpcWebProxy(proxy);
     }
 
 

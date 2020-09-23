@@ -46,14 +46,15 @@ public class XdsUtil {
                 .build();
         return cluster;
     }
-    public EnvoyListener buildListenerConfig(String proxy_id, String cluster_ip, int port){
+    public EnvoyListener buildListenerConfig(String proxy_id,int version){
         //1.filters
         EnvoyFilter filter=BuildRouteConfigItem(proxy_id);
+        int port=basePort+version;
         //listener
         EnvoyListener listener=new EnvoyListener.EnvoyListenerBuilder()
                 .setAddress(
                         new EnvoyListener.EnvoyEndpointSocketAddress(
-                                new EnvoyEndpoint.EnvoyEndpointAddressSocket("0.0.0.0",basePort))
+                                new EnvoyEndpoint.EnvoyEndpointAddressSocket(SysConf.BASE_ADDRESS,port))
                 )
                 .setFilter_chains(new ArrayList<EnvoyListener.EnvoyFilters>(){{
                     add(new EnvoyListener.EnvoyFilters(new ArrayList<EnvoyFilter>(){{

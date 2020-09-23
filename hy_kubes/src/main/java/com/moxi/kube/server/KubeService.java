@@ -16,6 +16,8 @@ import io.kubernetes.client.openapi.ApiException;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +38,7 @@ public class KubeService {
         //2.判断,构建entity,插入数据库
         String code=deployResult.get(SysConf.CODE).toString();
         if(code.equals(SysConf.SUCCESS)){
-            MicroDeployment deployment=new MicroDeployment(service.getDeployment_id(),service.getDescription(),service.getName(),service.getCreate_date(),service.getImage_name(),service.getReplicas(),service.getPorts(),service.getNamespace(),service.getEnv(),1,service.getSession_affinity(),service.getCommand(),service.getCluster_ip(),service.getOwner());
+            MicroDeployment deployment=new MicroDeployment(service.getDeployment_id(),service.getDescription(),service.getName(),new Date(),service.getImage_name(),service.getReplicas(),service.getPorts(),service.getNamespace(),service.getEnv(),1,service.getSession_affinity(),service.getCommand(),service.getCluster_ip(),service.getOwner());
             deployment.insert();
             return ResultUtil.result(SysConf.SUCCESS,MessageConf.INSERT_SUCCESS);
         }else{
@@ -44,10 +46,9 @@ public class KubeService {
         }
     }
 
-    public String deleteMicroService(String deployment_id,String uid) throws ApiException {
+    public String deleteMicroService(String deployment_id) throws ApiException {
         //查看mysql中是否有该记录
         QueryWrapper<MicroDeployment> wrapper=new QueryWrapper<>();
-        wrapper.eq(SqlConf.OWNER,uid);
         wrapper.eq(SqlConf.DEPLOYMENT_ID,deployment_id);
         MicroDeployment deployment=deploymentService.getOne(wrapper);
         if(deployment==null)return ResultUtil.result(SysConf.ERROR,MessageConf.ENTITY_NOT_EXIST);
@@ -58,13 +59,7 @@ public class KubeService {
         return ResultUtil.result(SysConf.SUCCESS,MessageConf.DELETE_SUCCESS);
     }
 
-    public IPage<MicroDeployment> getList(DeploymentServiceVO serviceVO){
-        QueryWrapper<MicroDeployment> wrapper=new QueryWrapper<>();
-        wrapper.eq(SqlConf.OWNER,serviceVO.owner);
-        Page<MicroDeployment> page=new Page<>(serviceVO.getCurrentPage(),serviceVO.getPageSize());
-        IPage<MicroDeployment> page1 = deploymentService.page(page, wrapper);
-        System.out.println("11111");
-        System.out.println(wrapper.getSqlComment());
-        return page1;
+    public List<MicroDeployment> getList(){
+        return deploymentService.list();
     }
 }

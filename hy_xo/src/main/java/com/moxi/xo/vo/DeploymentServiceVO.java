@@ -2,7 +2,10 @@ package com.moxi.xo.vo;
 
 
 
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +16,8 @@ import java.util.List;
  * @date 2020/9/16 19:41
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class DeploymentServiceVO {
 
     public String deployment_id ;
@@ -20,6 +25,7 @@ public class DeploymentServiceVO {
     /// 部署描述
     /// </summary>
     /// <value></value>
+
     public String description ;
     /// <summary>
     /// 创建的时间
@@ -30,6 +36,7 @@ public class DeploymentServiceVO {
     /// 镜像名
     /// </summary>
     /// <value></value>
+    @ApiModelProperty(required = true,notes = "镜像名称")
     public String image_name ;
     /// <summary>
     /// 部署人

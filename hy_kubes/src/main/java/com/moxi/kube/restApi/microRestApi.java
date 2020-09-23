@@ -28,7 +28,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/microservice")
-@Api(value = "微服务相关接口", tags = {"微服务相关接口"})
+@Api(value = "微服务部署相关接口", tags = {"微服务部署相关接口"})
 public class microRestApi {
     @Autowired
     KubeService kubeService;
@@ -38,10 +38,7 @@ public class microRestApi {
     @ApiOperation(value = "微服务部署", notes = "微服务部署", response = String.class)
     @PostMapping("/add")
     public String  CreateDeployment(@RequestBody DeploymentServiceVO service) {
-        String uid= UUID.randomUUID().toString();
-        service.deployment_id=uid;
-        String owner="3bf3b8298cbe91d5246c511bc6659d99";
-        service.owner=owner;
+        service.deployment_id=UUID.randomUUID().toString();;
         return  kubeService.DeployMicroService(service);
     }
 
@@ -53,16 +50,15 @@ public class microRestApi {
         if(deployment_id.equals("")){
             return ResultUtil.result(SysConf.ERROR, MessageConf.PARAM_INCORRECT);
         }
-        String owner="3bf3b8298cbe91d5246c511bc6659d99";
-        return kubeService.deleteMicroService(deployment_id,owner);
+        return kubeService.deleteMicroService(deployment_id);
     }
 
 //    @AuthorityVerify
 //    @OperationLogger(value = "")
-    @ApiOperation(value = "获取自己部署的微服务", notes = "获取自己部署的微服务", response = String.class)
+    @ApiOperation(value = "获取已经部署的微服务", notes = "获取已经部署的微服务", response = String.class)
     @GetMapping("/getList")
-    public String GetMyDeployments(@RequestBody DeploymentServiceVO service) {
-        return ResultUtil.result(SysConf.SUCCESS,kubeService.getList(service));
+    public String GetMyDeployments() {
+        return ResultUtil.result(SysConf.SUCCESS,kubeService.getList());
     }
 
 }

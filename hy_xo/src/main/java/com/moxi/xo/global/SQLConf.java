@@ -21,6 +21,7 @@ public final class SQLConf extends BaseSQLConf {
     public final static String CONTENT = "content";
     public final static String TITLE = "title";
     public final static String NAME = "name";
+    public final static String CLUSTER_IP="cluster_ip";
     public final static String NAME1="NAME";
     public final static String PIC_NAME = "pic_name";
     public final static String PICTURE_SORT_UID = "picture_sort_uid";

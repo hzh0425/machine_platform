@@ -20,6 +20,7 @@ public class BaseMessageConf {
 
     public static final String ENTITY_EXIST = "该实体已存在";
     public static final String ENTITY_NOT_EXIST = "该实体不存在";
+    public final static String ALREADY_PROXY="您已经为该微服务创建了代理,请勿重复操作";
     public static final String SYSTEM_CONFIG_NOT_EXIST = "系统配置有误";
     public static final String PLEASE_SET_QI_NIU = "请先配置七牛云";
     public static final String PLEASE_SET_LOCAL = "请先配置本地图片域名";

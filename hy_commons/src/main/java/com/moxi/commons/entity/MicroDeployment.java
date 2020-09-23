@@ -23,15 +23,15 @@ public class MicroDeployment extends Model<MicroDeployment> {
     private String deploymentId;
     private String description;
     private String name;
-    private Date create_date;
-    private String image_name;
+    private Date createDate;
+    private String imageName;
     private int replicas;
     private String ports;
     private String nspace;
     private String env;
     private int type;
-    private int session_affinity;
+    private int sessionAffinity;
     private String command;
-    private String cluster_ip;
+    private String clusterIp;
     private String owner;
 }

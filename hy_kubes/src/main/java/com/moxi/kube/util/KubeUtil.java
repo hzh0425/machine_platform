@@ -56,9 +56,9 @@ public class KubeUtil {
      */
     public Map<String, Object> DeployMicroService(DeploymentServiceVO service){
         // 镜像指定从私有仓库中获取，避免外部镜像安全问题
-//        if(!service.image_name.trim().equals(SysConf.registry)){
-//            service.image_name=SysConf.registry+SysConf.FILE_SEGMENTATION+service.image_name.trim();
-//        }
+        if(!service.image_name.trim().equals(SysConf.registry)){
+            service.image_name=SysConf.registry+SysConf.FILE_SEGMENTATION+service.image_name.trim();
+        }
         //选择标签
         //1.deployment模板
         V1Deployment deployment=buildDeployment(service);
@@ -92,7 +92,7 @@ public class KubeUtil {
 
         //container envList
         ArrayList<V1EnvVar> envList=new ArrayList<>();
-        if(service.envList.size()>0){
+        if(service.envList!=null&&service.envList.size()>0){
             service.envList.forEach(item->{
                 V1EnvVar envVar=new V1EnvVarBuilder()
                         .withName(item.name)
@@ -104,7 +104,7 @@ public class KubeUtil {
 
         //container容器
         ArrayList<V1ContainerPort> portArrayList=new ArrayList<>();
-        if(service.portList.size()>0){
+        if(service.portList!=null&&service.portList.size()>0){
             service.portList.forEach(item->{
                 V1ContainerPort port=new V1ContainerPort();
                 port.setContainerPort(item.getPort());
