@@ -6,11 +6,9 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 124.70.200.174:8848
+        server-addr: http://frp.leavessoft.cn:20000
         #ip: 124.70.200.174
       config:
         file-extension: yaml
         group: machinePlatform
-        server-addr: 124.70.200.174:8848
-# redisson lock
-redisson.address: redis://localhost:6379
+        server-addr: http://frp.leavessoft.cn:20000

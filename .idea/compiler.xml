@@ -12,10 +12,10 @@
         <module name="hy_envoy" />
         <module name="hy_search" />
         <module name="hy_base" />
-        <module name="hy_grpc" />
+        <module name="hy_admin" />
         <module name="hy_gateway" />
         <module name="hy_commons" />
-        <module name="hy_admin" />
+        <module name="hy_grpc" />
         <module name="hy_kubes" />
         <module name="hy_minio" />
         <module name="hy_xo" />

@@ -38,6 +38,7 @@ public class microRestApi {
     @ApiOperation(value = "微服务部署", notes = "微服务部署", response = String.class)
     @PostMapping("/add")
     public String  CreateDeployment(@RequestBody DeploymentServiceVO service) {
+
         service.deployment_id=UUID.randomUUID().toString();;
         return  kubeService.DeployMicroService(service);
     }
