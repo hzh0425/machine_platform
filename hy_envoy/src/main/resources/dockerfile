@@ -1,0 +1,2 @@
+FROM envoyproxy/envoy-alpine
+expose 9901

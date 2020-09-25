@@ -33,6 +33,7 @@ main\entity\EnvoyVirtualHostCors$EnvoyHttpServiceUri.class
 main\bean\XdsRoute.class
 main\entity\EnvoyLoadAssignment$LbEnvoyEndpoint.class
 main\entity\listener\EnvoyListener$EnvoyEndpointAddressSocket.class
+main\controller\DiscoveryRestApi.class
 main\entity\EnvoyCluster.class
 main\entity\EnvoyHostRoute.class
 main\util\RedissLockUtil.class
@@ -49,6 +50,5 @@ main\entity\EnvoyVirtualHostCors.class
 main\global\SysConf.class
 main\mapper\XdsClusterMapper.class
 main\entity\EnvoyLoadAssignment.class
-main\controller\envoyController.class
 main\util\XdsUtil$3.class
 main\entity\listener\EnvoyListener$EnvoyEndpointSocketAddress.class

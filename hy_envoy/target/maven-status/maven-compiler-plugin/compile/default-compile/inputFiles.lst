@@ -2,10 +2,10 @@ D:\Aspringboot\machineForm\machine_platform\hy_envoy\src\main\java\main\mapper\X
 D:\Aspringboot\machineForm\machine_platform\hy_envoy\src\main\java\main\server\XdsServer.java
 D:\Aspringboot\machineForm\machine_platform\hy_envoy\src\main\java\main\bean\XdsListener.java
 D:\Aspringboot\machineForm\machine_platform\hy_envoy\src\main\java\main\entity\EnvoyLoadAssignment.java
+D:\Aspringboot\machineForm\machine_platform\hy_envoy\src\main\java\main\controller\DiscoveryRestApi.java
 D:\Aspringboot\machineForm\machine_platform\hy_envoy\src\main\java\main\bean\XdsRoute.java
 D:\Aspringboot\machineForm\machine_platform\hy_envoy\src\main\java\main\entity\EnvoyClustersConfig.java
 D:\Aspringboot\machineForm\machine_platform\hy_envoy\src\main\java\main\entity\EnvoyCluster.java
-D:\Aspringboot\machineForm\machine_platform\hy_envoy\src\main\java\main\controller\envoyController.java
 D:\Aspringboot\machineForm\machine_platform\hy_envoy\src\main\java\main\global\SysConf.java
 D:\Aspringboot\machineForm\machine_platform\hy_envoy\src\main\java\main\entity\EnvoyHostRoute.java
 D:\Aspringboot\machineForm\machine_platform\hy_envoy\src\main\java\main\entity\EnvoyVirtualHostCors.java

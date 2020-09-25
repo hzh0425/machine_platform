@@ -6,9 +6,9 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: http://frp.leavessoft.cn:20000
+        server-addr: frp.leavessoft.cn:8848
         #ip: 124.70.200.174
       config:
         file-extension: yaml
         group: machinePlatform
-        server-addr: http://frp.leavessoft.cn:20000
+        server-addr: frp.leavessoft.cn:8848

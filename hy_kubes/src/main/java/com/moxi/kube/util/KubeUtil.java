@@ -15,11 +15,9 @@ import org.apache.commons.collections.map.HashedMap;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,10 +38,16 @@ public class KubeUtil {
 
     @PostConstruct
     public void init() throws Exception {
-        ClassPathResource classPathResource = new ClassPathResource("kube.config");
-        File file=classPathResource.getFile();
-        FileReader fileReader = new FileReader(file);
-        apiClient=ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(fileReader))
+        ClassPathResource resource=new ClassPathResource("kube.config");
+        InputStream stream=resource.getInputStream();
+        FileOutputStream outputStream=new FileOutputStream("temp.config");
+        byte[]bytes=new byte[1024];
+        int read=0;
+        while((read=stream.read(bytes))!=-1){
+            outputStream.write(bytes,0,read);
+        }
+        System.out.println("success");
+        apiClient=ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader("temp.config")))
                                 .setVerifyingSsl(false).build();
         Configuration.setDefaultApiClient(apiClient);
         appsV1Api=new AppsV1Api(apiClient);

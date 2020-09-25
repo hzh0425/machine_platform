@@ -1,0 +1,11 @@
+com\moxi\kube\config\Swagger2.class
+com\moxi\kube\KubeApplication.class
+com\moxi\kube\util\KubeUtil.class
+com\moxi\kube\global\SysConf.class
+com\moxi\kube\server\KubeService.class
+com\moxi\kube\restApi\proxyRestApi.class
+com\moxi\kube\restApi\microRestApi.class
+com\moxi\kube\config\DruidConfig.class
+com\moxi\kube\feign\envoyFeign.class
+com\moxi\kube\config\WebSecurityConfig.class
+com\moxi\kube\global\SqlConf.class

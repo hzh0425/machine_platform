@@ -24,6 +24,8 @@ public class XdsUtil {
         String clusterKey=(SysConf.CLUSTER+proxy_id).toLowerCase();
         //1.LbEnvoyEndpoints
         //1.EnvoyEndpoints
+        System.out.println(cluster_ip);
+        System.out.println(port);
         EnvoyEndpoint envoyEndpoint=new EnvoyEndpoint(new EnvoyEndpoint.EnvoyEndpointAddress(new EnvoyEndpoint.EnvoyEndpointSocketAddress(new EnvoyEndpoint.EnvoyEndpointAddressSocket(cluster_ip,port))));
         List<EnvoyEndpoint> endpoints=new ArrayList<>();
         endpoints.add(envoyEndpoint);
