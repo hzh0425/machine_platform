@@ -34,4 +34,5 @@ public class MicroDeployment extends Model<MicroDeployment> {
     private String command;
     private String clusterIp;
     private String owner;
+    private int nodePort;
 }

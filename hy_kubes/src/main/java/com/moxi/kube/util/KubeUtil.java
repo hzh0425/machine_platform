@@ -60,7 +60,7 @@ public class KubeUtil {
      */
     public Map<String, Object> DeployMicroService(DeploymentServiceVO service){
         // 镜像指定从私有仓库中获取，避免外部镜像安全问题
-        if(!service.image_name.trim().equals(SysConf.registry)){
+        if(!service.image_name.trim().contains(SysConf.registry)){
             service.image_name=SysConf.registry+SysConf.FILE_SEGMENTATION+service.image_name.trim();
         }
         //选择标签
@@ -68,12 +68,14 @@ public class KubeUtil {
         V1Deployment deployment=buildDeployment(service);
         //2.service模板
         V1Service v1Service=buildService(service);
+        System.out.println(v1Service);
         //请求创建服务
         Map<String,Object>result=new HashMap<>();
         try {
             V1Deployment namespacedDeployment = appsV1Api.createNamespacedDeployment(SysConf.NAMESPACE, deployment, null, null, null);
             V1Service namespacedService = coreV1Api.createNamespacedService(SysConf.NAMESPACE, v1Service, null, null, null);
             service.cluster_ip=namespacedService.getSpec().getClusterIP();
+            service.NodePort=namespacedService.getSpec().getPorts().get(0).getNodePort();
             result.put("service",service);
             result.put("code","success");
         }catch (ApiException e) {
@@ -93,7 +95,7 @@ public class KubeUtil {
     private V1Deployment buildDeployment(DeploymentServiceVO service) {
         Map<String,String> selectLabels=new HashedMap();
         selectLabels.put(SysConf.APP,SysConf.SVC+service.deployment_id.toLowerCase());
-
+        String name=SysConf.SVC+service.deployment_id.toLowerCase();
         //container envList
         ArrayList<V1EnvVar> envList=new ArrayList<>();
         if(service.envList!=null&&service.envList.size()>0){
@@ -117,7 +119,7 @@ public class KubeUtil {
         }
         ArrayList<V1Container> containerList=new ArrayList<>();
         V1Container container=new V1ContainerBuilder()
-                .withName(SysConf.Container+service.deployment_id)
+                .withName(name)
                 .withImage(service.image_name)
                 .withImagePullPolicy(SysConf.IMAGE_PullPolicy)
                 .withEnv(envList)
@@ -132,7 +134,7 @@ public class KubeUtil {
                 //元数据
                 .withMetadata(
                         new V1ObjectMetaBuilder().
-                                withName(SysConf.DEPLOYMENT+service.deployment_id.toLowerCase()).
+                                withName(name).
                                 withNamespace(SysConf.NAMESPACE)
                                 .build()
                 )
@@ -173,6 +175,7 @@ public class KubeUtil {
     public V1Service buildService(DeploymentServiceVO service){
         Map<String,String> selectLabels=new HashedMap();
         selectLabels.put(SysConf.APP,SysConf.SVC+service.deployment_id.toLowerCase());
+        String name=SysConf.SVC+service.deployment_id.toLowerCase();
         //3.1portList
 
         ArrayList<V1ServicePort> servicePorts=new ArrayList<>();
@@ -199,13 +202,13 @@ public class KubeUtil {
                 .withMetadata(
                         new V1ObjectMetaBuilder()
                                 .withLabels(selectLabels)
-                                .withName(SysConf.SERVICE+service.deployment_id)
+                                .withName(name)
                                 .withNamespace(SysConf.NAMESPACE)
                                 .build()
                 )
                 .withSpec(
                         new V1ServiceSpecBuilder()
-                                .withType(SysConf.TYPE_CLUSTER)
+                                .withType(SysConf.TYPE_NODEPORT)
                                 .withSelector(selectLabels)
                                 .withSessionAffinity(service.session_affinity == 0 ? null : "ClientIP")
                                 .withSessionAffinityConfig(config)
@@ -220,17 +223,23 @@ public class KubeUtil {
      */
     @Async
     public Boolean RemoveMicroDeployment(String deployment_id) throws ApiException {
-        String dId=SysConf.DEPLOYMENT+deployment_id;
-        String sId=SysConf.SERVICE+deployment_id;
-        System.out.println(dId);
-        System.out.println(sId);
+        String dId=SysConf.SVC+deployment_id;
         V1Status status=appsV1Api.deleteNamespacedDeployment(dId,SysConf.NAMESPACE,null,null,null,null,null,null);
-        V1Status status1=coreV1Api.deleteNamespacedService(sId,SysConf.NAMESPACE,null,null,null,null,null,null);
+        V1Status status1=coreV1Api.deleteNamespacedService(dId,SysConf.NAMESPACE,null,null,null,null,null,null);
         if(status1.getStatus()=="Success"){
             return true ;
         }else{
             return false;
         }
+    }
+
+    /**
+     * 获取某个命名空间下容器的状态
+     * @return
+     */
+    public java.util.List<V1Pod> getPodStatus(String namespace) throws ApiException {
+        V1PodList list=coreV1Api.listNamespacedPod(namespace,null,null,null,null,null,null,null,null,null);
+        return list.getItems();
     }
 
 }

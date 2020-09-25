@@ -1,5 +1,6 @@
 package com.moxi.kube.server;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -12,14 +13,19 @@ import com.moxi.xo.global.SQLConf;
 import com.moxi.xo.global.SysConf;
 import com.moxi.xo.service.MicroDeploymentService;
 import com.moxi.xo.vo.DeploymentServiceVO;
+import com.moxi.xo.vo.MicroDeploymentStatus;
 import io.kubernetes.client.openapi.ApiException;
+import io.kubernetes.client.openapi.models.V1ObjectMeta;
+import io.kubernetes.client.openapi.models.V1Pod;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author hzh
@@ -38,7 +44,15 @@ public class KubeService {
         //2.判断,构建entity,插入数据库
         String code=deployResult.get(SysConf.CODE).toString();
         if(code.equals(SysConf.SUCCESS)){
-            MicroDeployment deployment=new MicroDeployment(service.getDeployment_id(),service.getDescription(),service.getName(),new Date(),service.getImage_name(),service.getReplicas(),service.getPorts(),service.getNamespace(),service.getEnv(),1,service.getSession_affinity(),service.getCommand(),service.getCluster_ip(),service.getOwner());
+            if(service.getPortList()!=null){
+                service.ports= JSON.toJSONString(service.getPortList());
+            }
+            if(service.getEnvList()!=null){
+                service.env=JSON.toJSONString(service.getEnvList());
+            }
+            System.out.println("service-------");
+            System.out.println(service);
+            MicroDeployment deployment=new MicroDeployment(service.getDeployment_id(),service.getDescription(),service.getName(),new Date(),service.getImage_name(),service.getReplicas(),service.getPorts(),service.getNamespace(),service.getEnv(),1,service.getSession_affinity(),service.getCommand(),service.getCluster_ip(),service.getOwner(),service.getNodePort());
             deployment.insert();
             return ResultUtil.result(SysConf.SUCCESS,MessageConf.INSERT_SUCCESS);
         }else{
@@ -61,5 +75,16 @@ public class KubeService {
 
     public List<MicroDeployment> getList(){
         return deploymentService.list();
+    }
+
+    public String getPodStatus() throws ApiException {
+//        List<MicroDeployment> list=deploymentService.list();
+//        List<String> nameList=list.stream().map(x-> com.moxi.kube.global.SysConf.SVC+x.getDeploymentId()).collect(Collectors.toList());;
+//        List<V1Pod> podList=kubeUtil.getPodStatus(com.moxi.kube.global.SysConf.NAMESPACE);
+//        Map<String,Boolean> filterResult=podList.stream().filter(x->{
+//            return nameList.contains(x.getMetadata().getName());
+//        });
+//        return ResultUtil.result(SysConf.SUCCESS,filterResult);
+        return "success";
     }
 }

@@ -16,6 +16,7 @@ public class SysConf {
     public final static String TYPE_DEPLOYMENT="Deployment";
     public final static String TYPE_SERVICE="Service";
     public final static String TYPE_CLUSTER="ClusterIP";
+    public final static String TYPE_NODEPORT="NodePort";
     public final static String API_VERSION="apps/v1";
     public final static String SERVICE_VERSION="v1";
     public final static String APP="app";

@@ -1,6 +1,7 @@
 package com.moxi.kube;
 
 import com.moxi.kube.server.KubeService;
+import com.moxi.kube.util.KubeUtil;
 import io.kubernetes.client.openapi.ApiException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class test {
     @Autowired
-    KubeService cubeUtil;
+    KubeUtil cubeUtil;
 
+    @Test
+    public void test1() throws ApiException {
+        cubeUtil.getPodStatus("creatorcloud");
+    }
 }

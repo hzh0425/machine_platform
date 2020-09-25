@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/proxy")
-@Api(value = "微服务代理相关接口", tags = {"微服务代理相关接口"})
+//@Api(value = "微服务代理相关接口", tags = {"微服务代理相关接口"})
 public class proxyRestApi {
     @Autowired
     WebProxyService proxyService;
@@ -40,4 +40,6 @@ public class proxyRestApi {
     public String delete(@RequestParam("proxy_id")String proxy_id){
         return proxyService.delete(proxy_id);
     }
+
+
 }

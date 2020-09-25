@@ -2,6 +2,7 @@ package com.moxi.xo.vo;
 
 
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,22 +16,24 @@ import java.util.List;
  * @version 1.0
  * @date 2020/9/16 19:41
  */
+@ApiModel
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeploymentServiceVO {
-
+    @ApiModelProperty(required = false)
     public String deployment_id ;
     /// <summary>
     /// 部署描述
     /// </summary>
     /// <value></value>
-
+    @ApiModelProperty(value = "镜像描述",required = true)
     public String description ;
     /// <summary>
     /// 创建的时间
     /// </summary>
     /// <value></value>
+    @ApiModelProperty(required = false)
     public Date create_date;
     /// <summary>
     /// 镜像名
@@ -94,6 +97,5 @@ public class DeploymentServiceVO {
 
     public int session_affinity=0;
 
-    public int currentPage=0;
-    public int pageSize=10;
+    public int NodePort;
 }
