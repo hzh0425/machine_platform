@@ -1,0 +1,18 @@
+apiVersino: v1
+kind: Pod
+metadata:
+  name: readiness-httpget-pod
+  namespace: hzh-cloud
+spec:
+  containers:
+    - name: readiness-httpget-container
+      image: wangyanglinux/myapp:v1
+      imagePullPolicy: IfNotPresent #如果本地没有,再去拉取
+      ports:
+        - name: http
+          containerPort: 80
+      livenessProbe: #就绪探针
+        httpGet: # 发送get请求,探测该容器的 80/index1.html
+          port: http
+          path: /index.html
+        periodSeconds: 3 #重试时间为3s

@@ -1,0 +1,15 @@
+apiVersion: xxx
+kind: xxx   #资源类别
+metadata:  #元数据
+  name: xx
+  namespace: xxx
+  lables: #选择标签
+    app: xxx
+spec: #详细信息
+  containers: #定义容器
+    - name: myapp-1
+      image: xxxx
+    - name: myapp-2
+      image: xxxx
+      command:  #
+        - "bin/bash"

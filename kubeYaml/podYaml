@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod   #资源类别
+metadata:  #元数据
+  name: pod-demo
+  namespace: default
+  lables: #选择标签
+    app: myapp
+spec: #详细信息
+  containers: #定义容器
+    - name: myapp-1
+      image: redis
